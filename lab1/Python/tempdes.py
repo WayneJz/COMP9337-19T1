@@ -38,11 +38,11 @@ def run(iv,key,inputfile, outputfile):
     iv = binascii.unhexlify(iv)
 
     cipher = DES_CBC_enc(cbc_key, iv, test_file)
-    with open(outputfile, mode='a') as file1:
+    with open(outputfile, mode='ab') as file1:
         file1.write(cipher)
 
     decipher = DES_CBC_dec(cbc_key, iv, cipher)
-    with open('deciper_file.txt', mode='a') as file:
+    with open('deciper_file.txt', mode='ab') as file:
         file.write(decipher)
 
 
