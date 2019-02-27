@@ -1,7 +1,7 @@
 #Following code reads its source file and computes an HMAC signature for it:
 import hmac
 
-digest_maker = hmac.new(b'secret-shared-key-goes-here')
+digest_maker = hmac.new('secret-shared-key-goes-here')
 
 f = open('lorem.txt', 'rb')
 try:
@@ -14,5 +14,5 @@ finally:
     f.close()
 
 digest = digest_maker.hexdigest()
-print(digest)
+print digest
 
