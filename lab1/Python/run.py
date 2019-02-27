@@ -43,9 +43,9 @@ class Testrun:
 
     def function_call(self):
         for des in self.type_size['DES']:
-            des[1], des[2] = desrun(IV, KEY, 'DES' + '_' + str(des[0]) + '.txt', 'DES_OUT' + '_' + str(des[0]) + '.txt')
+            des[1], des[2] = desrun(IV, KEY, 'DES' + '_' + str(des[0]) + '.txt', 'DES_OUT' + '_' + str(des[0]) + '.des')
         for aes in self.type_size['AES']:
-            aes[1], aes[2] = aesrun('AES' + '_' + str(aes[0]) + '.txt', 'AES_OUT' + '_' + str(aes[0]) + '.txt')
+            aes[1], aes[2] = aesrun('AES' + '_' + str(aes[0]) + '.txt', 'AES_OUT' + '_' + str(aes[0]) + '.aes')
         for HMACs in self.type_size['HMACs']:
             HMACs[1] = HMACsrun('HMACs' + '_' + str(HMACs[0]) + '.txt')
             HMACs[2] = HMACs[1] 

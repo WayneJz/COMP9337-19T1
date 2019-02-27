@@ -1,6 +1,7 @@
 #Following code reads its source file and computes an HMAC signature for it:
 import hmac
 import time
+import sys
 
 def run(name):
 
@@ -22,6 +23,7 @@ def run(name):
 
 
 if __name__ =='__main__':
-    time = run('test2.txt')
-    print(time)
+    inputfile = sys.argv[1]
+    time = run(inputfile)
+    print('hash time : ',time)
 

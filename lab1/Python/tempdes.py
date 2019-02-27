@@ -2,6 +2,7 @@
 from Crypto.Cipher import DES
 import binascii
 import time
+import sys
 
 def read_file(name):
     patch = '\x00'
@@ -54,19 +55,15 @@ def run(iv,key,inputfile, outputfile):
     return cipher_time , decipher_time
 
 
-
-
 if __name__ == '__main__':
 
-    '''''''''
-    iv,key,inputfile,outputfile = [sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4]]
-    
-    '''''''''
-    key = '40fedf386da13d57'
-    iv = 'fedcba9876543210'
-    a,b = run(iv, key, 'test.txt','tes.des')
-    print(a)
-    print(b)
+    #key = '40fedf386da13d57'
+    #iv = 'fedcba9876543210'
+
+    iv,key,inputfile,outputfile = sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4]
+    a,b = run(iv,key,inputfile,outputfile)
+    print('encryption time : ',a)
+    print('decryption time : ',b)
 
 
 
