@@ -2,6 +2,7 @@
 from Crypto.Cipher import AES
 import time
 from Crypto import Random
+import sys
 
 
 def read_file(name):
@@ -61,11 +62,10 @@ def run(inputfile, outputfile):
 
 
 if __name__ == '__main__':
-    '''''''''
-    iv,key,inputfile,outputfile = [sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4]]
 
-    '''''''''
-    a,b = run('test.txt', 'tes.des')
-    print(a)
-    print(b)
+    inputfile,outputfile = sys.argv[1],sys.argv[2]
+
+    a,b = run(inputfile, outputfile)
+    print('encryption time : ',a)
+    print('decryption time : ',b)
 
