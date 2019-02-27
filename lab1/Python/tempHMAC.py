@@ -4,7 +4,7 @@ import time
 
 def run(name):
 
-    digest_maker = hmac.new('secret-shared-key-goes-here')
+    digest_maker = hmac.new(b'secret-shared-key-goes-here')
 
     f = open(name, 'rb')
     try:
@@ -18,8 +18,7 @@ def run(name):
     start = time.time()
     digest = digest_maker.hexdigest()
     digest_time = time.time() - start
-    print (digest)
-    return  digest_time
+    return digest_time
 
 
 if __name__ =='__main__':

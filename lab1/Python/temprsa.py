@@ -3,6 +3,7 @@ from Crypto.PublicKey import RSA
 from Crypto import Random
 import ast
 import time
+import sys
 
 
 def read_file(name):
@@ -31,26 +32,30 @@ def run(name):
     publickey = key.publickey() # pub key export for exchange
 
     start1 = time.time()
-    encrypted = publickey.encrypt(file,32)
+    try:    # for Python 2.7 and Python 3.6, different positions of arguments 
+        encrypted = publickey.encrypt(file,32)
+    except TypeError:
+        encrypted = publickey.encrypt(32,file)
+
     cipher_time = time.time() - start1
 
     #message to encrypt is in the above line 'encrypt this message'
-    print ('encrypted message:', encrypted) #ciphertext
+    print('encrypted message:', encrypted) #ciphertext
 
     #decrypted code below
     start2 = time.time()
     decrypted = key.decrypt(ast.literal_eval(str(encrypted)))
     decipher_time = time.time() - start2
-    print ('decrypted', decrypted)
+    print('decrypted', decrypted)
 
     return cipher_time , decipher_time
 
 
 
-
-a,b = run('test.txt')
-print(a)
-print(b)
+if __name__ == "__main__":
+    a,b = run('test.txt')
+    print(a)
+    print(b)
 
 
 
