@@ -6,7 +6,7 @@ from Crypto import Random
 
 def read_file(name):
     patch = '\x00'
-    blocksize = 8
+    blocksize = 16
     with open(name) as f:
         a = f.read()
         b = a
@@ -16,7 +16,7 @@ def read_file(name):
             if i + blocksize < len(a):
                 pass
             else:
-                patch_num = 8 - len(a[i:])
+                patch_num = 16 - len(a[i:])
                 b = a + patch * (patch_num)
 
     return b
@@ -34,7 +34,10 @@ def AES_CBC_dec(cbc_key, iv, cipher_text):
     return msg_text
 
 
-def run(iv, key, inputfile, outputfile):
+def run(inputfile, outputfile):
+    iv = Random.get_random_bytes(16)
+    key = Random.get_random_bytes(16)
+
     test_file = read_file(inputfile)
 
     start1 = time.time()
@@ -62,10 +65,7 @@ if __name__ == '__main__':
     iv,key,inputfile,outputfile = [sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4]]
 
     '''''''''
-    cbc_key = Random.get_random_bytes(16)
-    iv = Random.get_random_bytes(16)
-
-    a,b = run(iv, cbc_key, 'test.txt', 'tes.des')
+    a,b = run('test.txt', 'tes.des')
     print(a)
     print(b)
 

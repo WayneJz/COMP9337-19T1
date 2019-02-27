@@ -3,11 +3,11 @@ import string
 import random
 import matplotlib.pyplot as plot
 
-# from tempaes import *
+from tempaes import run as aesrun
 from tempdes import run as desrun
-# from tempHMAC import *
-# from temprsa import *
-# from tempsha1 import *
+from tempHMAC import run as HMACsrun
+from tempsha1 import run as sha1run
+from temprsa import run as rsarun
 
 
 KEY = '40fedf386da13d57'
@@ -36,15 +36,25 @@ class Testrun:
 
     def file_generator(self, type, size):
         file_name = type + '_' + str(size) + '.txt'
+        print('Generating test file ' + file_name)
         with open(file_name, 'w') as file:
             for _ in range(0, size):
                 file.write(random.choice(string.printable))
 
     def function_call(self):
-        for file in self.type_size['DES']:
-            self.timer('Start')
-            desrun(IV, KEY, 'DES' + '_' + str(file[0]) + '.txt', 'DESOUT' + '_' + str(file[0]) + '.txt')
-            file[1] = self.timer()
+        for des in self.type_size['DES']:
+            des[1], des[2] = desrun(IV, KEY, 'DES' + '_' + str(des[0]) + '.txt', 'DES_OUT' + '_' + str(des[0]) + '.txt')
+        for aes in self.type_size['AES']:
+            aes[1], aes[2] = aesrun('AES' + '_' + str(aes[0]) + '.txt', 'AES_OUT' + '_' + str(aes[0]) + '.txt')
+        for HMACs in self.type_size['HMACs']:
+            HMACs[1] = HMACsrun('HMACs' + '_' + str(HMACs[0]) + '.txt')
+            HMACs[2] = HMACs[1] 
+        for sha1 in self.type_size['SHA-1']:
+            sha1[1] = sha1run('SHA-1' + '_' + str(sha1[0]) + '.txt')
+            sha1[2] = sha1[1] 
+        for rsa in self.type_size['RSA']:
+            rsa[1], rsa[2] = rsarun('RSA' + '_' + str(rsa[0]) + '.txt')
+  
 
     def timer(self, flag='Stop'):
         if flag == 'Start':
@@ -54,18 +64,22 @@ class Testrun:
 
     def visualization(self):
         for type in self.type_size.keys():
-            plot.bar(range(len(self.type_size[type])), [x[1] for x in self.type_size[type]], 
+            plot.bar(range(len(self.type_size[type])), [x[1] for x in self.type_size[type]],
             tick_label=[y[0] for y in self.type_size[type]], color='rgb')
+            for a, b in enumerate([y[1] for y in self.type_size[type]]):
+                plot.text(a, b + b * 0.01, '%.7f' %b, ha='center', va='bottom', fontsize=8)
             plot.title(type + ' Encryption')
-            plot.xlabel('File Size')
-            plot.ylabel('Time Consumed')
+            plot.xlabel('File Size (Bytes)')
+            plot.ylabel('Time Consumed (Seconds)')
             plot.show()
 
-            plot.bar(range(len(self.type_size[type])), [x[2] for x in self.type_size[type]], 
+            plot.bar(range(len(self.type_size[type])), [x[2] for x in self.type_size[type]],
             tick_label=[y[0] for y in self.type_size[type]], color='rgb')
+            for a, b in enumerate([y[2] for y in self.type_size[type]]):
+                plot.text(a, b + b * 0.01, '%.7f' %b, ha='center', va='bottom', fontsize=8)
             plot.title(type + ' Decryption')
-            plot.xlabel('File Size')
-            plot.ylabel('Time Consumed')
+            plot.xlabel('File Size (Bytes)')
+            plot.ylabel('Time Consumed (Seconds)')
             plot.show()
 
 
