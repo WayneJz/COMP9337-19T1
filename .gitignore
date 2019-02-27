@@ -3,7 +3,7 @@
 .pyc
 
 venv/
-*/__pycache__/
+**/__pycache__/
 .txt
 .DS_Store
 .~lock.README.txt#
