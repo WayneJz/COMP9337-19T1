@@ -1,5 +1,6 @@
 import hashlib
 import time
+import sys
 
 
 #initializing string
@@ -17,5 +18,7 @@ def run(name):
     return hex_time
 
 if __name__ ==  '__main__':
-    time = run('test2.txt')
-    print(time)
+
+    inputfile = sys.argv[1]
+    time = run(inputfile)
+    print('hash time : ',time)

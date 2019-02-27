@@ -53,9 +53,10 @@ def run(name):
 
 
 if __name__ == "__main__":
-    a,b = run('test.txt')
-    print(a)
-    print(b)
 
+    inputfile = sys.argv[1]
+    a,b = run(inputfile)
+    print('encryption time : ',a)
+    print('decryption time : ',b)
 
 
