@@ -1,6 +1,7 @@
 
 from Crypto.Cipher import AES
-import  binascii
+import time
+from Crypto import Random
 
 
 def read_file(name):
@@ -8,6 +9,7 @@ def read_file(name):
     blocksize = 8
     with open(name) as f:
         a = f.read()
+        b = a
 
     if a:
         for i in range(0, len(a), blocksize):
@@ -35,16 +37,24 @@ def AES_CBC_dec(cbc_key, iv, cipher_text):
 def run(iv, key, inputfile, outputfile):
     test_file = read_file(inputfile)
 
-    cbc_key = binascii.unhexlify(key)
-    iv = binascii.unhexlify(iv)
+    start1 = time.time()
+    cipher = AES_CBC_enc(key, iv, test_file)
+    cipher_time = time.time() - start1
 
-    cipher = AES_CBC_enc(cbc_key, iv, test_file)
-    with open(outputfile, mode='ab') as file1:
+
+    with open(outputfile, mode='wb') as file1:
         file1.write(cipher)
 
-    decipher = AES_CBC_dec(cbc_key, iv, cipher)
-    with open('deciper_file.txt', mode='ab') as file:
+
+    start2 = time.time()
+    decipher = AES_CBC_dec(key, iv, cipher)
+    decipher_time =time.time() -  start2
+
+
+    with open('deciper_file.txt', mode='wb') as file:
         file.write(decipher)
+
+    return cipher_time,decipher_time
 
 
 if __name__ == '__main__':
@@ -52,8 +62,10 @@ if __name__ == '__main__':
     iv,key,inputfile,outputfile = [sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4]]
 
     '''''''''
-    key = '40fedf386da13d57'
-    iv = 'fedcba9876543210'
+    cbc_key = Random.get_random_bytes(16)
+    iv = Random.get_random_bytes(16)
 
-    run(iv, key, 'test.txt', 'tes.des')
+    a,b = run(iv, cbc_key, 'test.txt', 'tes.des')
+    print(a)
+    print(b)
 

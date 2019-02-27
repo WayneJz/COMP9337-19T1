@@ -1,18 +1,28 @@
 #Following code reads its source file and computes an HMAC signature for it:
 import hmac
+import time
 
-digest_maker = hmac.new('secret-shared-key-goes-here')
+def run(name):
 
-f = open('lorem.txt', 'rb')
-try:
-    while True:
-        block = f.read(1024)
-        if not block:
-            break
-        digest_maker.update(block)
-finally:
-    f.close()
+    digest_maker = hmac.new('secret-shared-key-goes-here')
 
-digest = digest_maker.hexdigest()
-print digest
+    f = open(name, 'rb')
+    try:
+        while True:
+            block = f.read()
+            if not block:
+                break
+            digest_maker.update(block)
+    finally:
+        f.close()
+    start = time.time()
+    digest = digest_maker.hexdigest()
+    digest_time = time.time() - start
+    print (digest)
+    return  digest_time
+
+
+if __name__ =='__main__':
+    time = run('test2.txt')
+    print(time)
 
