@@ -1,6 +1,7 @@
 
 from Crypto.Cipher import AES
 import  binascii
+from Crypto import Random
 
 
 def read_file(name):
@@ -35,15 +36,12 @@ def AES_CBC_dec(cbc_key, iv, cipher_text):
 def run(iv, key, inputfile, outputfile):
     test_file = read_file(inputfile)
 
-    cbc_key = binascii.unhexlify(key)
-    iv = binascii.unhexlify(iv)
-
-    cipher = AES_CBC_enc(cbc_key, iv, test_file)
-    with open(outputfile, mode='ab') as file1:
+    cipher = AES_CBC_enc(key, iv, test_file)
+    with open(outputfile, mode='a') as file1:
         file1.write(cipher)
 
-    decipher = AES_CBC_dec(cbc_key, iv, cipher)
-    with open('deciper_file.txt', mode='ab') as file:
+    decipher = AES_CBC_dec(key, iv, cipher)
+    with open('deciper_file.txt', mode='a') as file:
         file.write(decipher)
 
 
@@ -52,8 +50,8 @@ if __name__ == '__main__':
     iv,key,inputfile,outputfile = [sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4]]
 
     '''''''''
-    key = '40fedf386da13d57'
-    iv = 'fedcba9876543210'
+    cbc_key = Random.get_random_bytes(16)
+    iv = Random.get_random_bytes(16)
 
-    run(iv, key, 'test.txt', 'tes.des')
+    run(iv, cbc_key, 'test.txt', 'tes.des')
 
