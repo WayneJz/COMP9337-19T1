@@ -1,6 +1,6 @@
 
 from Crypto.Cipher import AES
-import  binascii
+import time
 from Crypto import Random
 
 
@@ -9,6 +9,7 @@ def read_file(name):
     blocksize = 8
     with open(name) as f:
         a = f.read()
+        b = a
 
     if a:
         for i in range(0, len(a), blocksize):
@@ -36,13 +37,24 @@ def AES_CBC_dec(cbc_key, iv, cipher_text):
 def run(iv, key, inputfile, outputfile):
     test_file = read_file(inputfile)
 
+    start1 = time.time()
     cipher = AES_CBC_enc(key, iv, test_file)
-    with open(outputfile, mode='a') as file1:
+    cipher_time = time.time() - start1
+
+
+    with open(outputfile, mode='wb') as file1:
         file1.write(cipher)
 
+
+    start2 = time.time()
     decipher = AES_CBC_dec(key, iv, cipher)
-    with open('deciper_file.txt', mode='a') as file:
+    decipher_time =time.time() -  start2
+
+
+    with open('deciper_file.txt', mode='wb') as file:
         file.write(decipher)
+
+    return cipher_time,decipher_time
 
 
 if __name__ == '__main__':
@@ -53,5 +65,7 @@ if __name__ == '__main__':
     cbc_key = Random.get_random_bytes(16)
     iv = Random.get_random_bytes(16)
 
-    run(iv, cbc_key, 'test.txt', 'tes.des')
+    a,b = run(iv, cbc_key, 'test.txt', 'tes.des')
+    print(a)
+    print(b)
 

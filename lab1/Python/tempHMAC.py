@@ -1,6 +1,6 @@
 #Following code reads its source file and computes an HMAC signature for it:
 import hmac
-
+import time
 
 def run(name):
 
@@ -9,17 +9,20 @@ def run(name):
     f = open(name, 'rb')
     try:
         while True:
-            block = f.read(1024)
+            block = f.read()
             if not block:
                 break
             digest_maker.update(block)
     finally:
         f.close()
-
+    start = time.time()
     digest = digest_maker.hexdigest()
-    print digest
+    digest_time = time.time() - start
+    print (digest)
+    return  digest_time
 
 
 if __name__ =='__main__':
-    run('test3.txt')
+    time = run('test2.txt')
+    print(time)
 
