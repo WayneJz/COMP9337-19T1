@@ -48,10 +48,8 @@ class Testrun:
             aes[1], aes[2] = aesrun('AES' + '_' + str(aes[0]) + '.txt', 'AES_OUT' + '_' + str(aes[0]) + '.aes')
         for HMACs in self.type_size['HMACs']:
             HMACs[1] = HMACsrun('HMACs' + '_' + str(HMACs[0]) + '.txt')
-            HMACs[2] = HMACs[1] 
         for sha1 in self.type_size['SHA-1']:
             sha1[1] = sha1run('SHA-1' + '_' + str(sha1[0]) + '.txt')
-            sha1[2] = sha1[1] 
         for rsa in self.type_size['RSA']:
             rsa[1], rsa[2] = rsarun('RSA' + '_' + str(rsa[0]) + '.txt')
   
@@ -71,8 +69,11 @@ class Testrun:
             plot.title(type + ' Encryption')
             plot.xlabel('File Size (Bytes)')
             plot.ylabel('Time Consumed (Seconds)')
+            plot.savefig('./' + type + '_Encryption' + '.png')
             plot.show()
 
+            if type in ['SHA-1', 'HMACs']:
+                continue
             plot.bar(range(len(self.type_size[type])), [x[2] for x in self.type_size[type]],
             tick_label=[y[0] for y in self.type_size[type]], color='rgb')
             for a, b in enumerate([y[2] for y in self.type_size[type]]):
@@ -80,6 +81,7 @@ class Testrun:
             plot.title(type + ' Decryption')
             plot.xlabel('File Size (Bytes)')
             plot.ylabel('Time Consumed (Seconds)')
+            plot.savefig('./' + type + '_Decryption' + '.png')
             plot.show()
 
 
