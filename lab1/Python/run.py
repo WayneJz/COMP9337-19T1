@@ -62,25 +62,25 @@ class Testrun:
 
     def visualization(self):
         for type in self.type_size.keys():
-            plot.bar(range(len(self.type_size[type])), [x[1] for x in self.type_size[type]],
+            plot.bar(range(len(self.type_size[type])), [x[1] * 1000000 for x in self.type_size[type]],
             tick_label=[y[0] for y in self.type_size[type]], color='rgb')
-            for a, b in enumerate([y[1] for y in self.type_size[type]]):
-                plot.text(a, b + b * 0.01, '%.7f' %b, ha='center', va='bottom', fontsize=8)
+            for a, b in enumerate([y[1] * 1000000 for y in self.type_size[type]]):
+                plot.text(a, b + b * 0.01, '%.4f' %b, ha='center', va='bottom', fontsize=8)
             plot.title(type + ' Encryption')
             plot.xlabel('File Size (Bytes)')
-            plot.ylabel('Time Consumed (Seconds)')
+            plot.ylabel('Time Consumed (Microseconds)')
             plot.savefig('./' + type + '_Encryption' + '.png')
             plot.show()
 
             if type in ['SHA-1', 'HMAC']:
                 continue
-            plot.bar(range(len(self.type_size[type])), [x[2] for x in self.type_size[type]],
+            plot.bar(range(len(self.type_size[type])), [x[2] * 1000000 for x in self.type_size[type]],
             tick_label=[y[0] for y in self.type_size[type]], color='rgb')
-            for a, b in enumerate([y[2] for y in self.type_size[type]]):
-                plot.text(a, b + b * 0.01, '%.7f' %b, ha='center', va='bottom', fontsize=8)
+            for a, b in enumerate([y[2]  * 1000000 for y in self.type_size[type]]):
+                plot.text(a, b + b * 0.01, '%.4f' %b, ha='center', va='bottom', fontsize=8)
             plot.title(type + ' Decryption')
             plot.xlabel('File Size (Bytes)')
-            plot.ylabel('Time Consumed (Seconds)')
+            plot.ylabel('Time Consumed (Microseconds)')
             plot.savefig('./' + type + '_Decryption' + '.png')
             plot.show()
 
