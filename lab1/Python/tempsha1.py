@@ -5,9 +5,12 @@ import sys
 
 #initializing string
 def run(name):
-    with open(name, encoding='utf-8') as f:
-        #str = f.read()
-        str = [line.strip() for line in f.readlines()]
+    try:
+        with open(name, encoding='utf-8') as f:
+            str = [line.strip() for line in f.readlines()]
+    except TypeError:       # for Python 2.7
+        with open(name) as f:
+            str = [line.decode('utf-8').strip() for line in f.readlines()]
 
     start = time.time()
     result = hashlib.sha1(str[0].encode())

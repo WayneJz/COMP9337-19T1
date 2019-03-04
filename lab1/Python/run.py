@@ -5,7 +5,7 @@ import matplotlib.pyplot as plot
 
 from tempaes import run as aesrun
 from tempdes import run as desrun
-from tempHMAC import run as HMACsrun
+from tempHMAC import run as HMACrun
 from tempsha1 import run as sha1run
 from temprsa import run as rsarun
 
@@ -23,7 +23,7 @@ class Testrun:
     def __init__(self):
         self.type_size = {'DES': [[8, 0, 0], [64, 0, 0], [512, 0, 0], [4096, 0, 0], [32768, 0, 0], [262144, 0, 0], [2047152, 0, 0]],
                         'AES': [[8, 0, 0], [64, 0, 0], [512, 0, 0], [4096, 0, 0], [32768, 0, 0], [262144, 0, 0], [2047152, 0, 0]],
-                        'HMACs': [[8, 0, 0], [64, 0, 0], [512, 0, 0], [4096, 0, 0], [32768, 0, 0], [262144, 0, 0], [2047152, 0, 0]],
+                        'HMAC': [[8, 0, 0], [64, 0, 0], [512, 0, 0], [4096, 0, 0], [32768, 0, 0], [262144, 0, 0], [2047152, 0, 0]],
                         'SHA-1': [[8, 0, 0], [64, 0, 0], [512, 0, 0], [4096, 0, 0], [32768, 0, 0], [262144, 0, 0], [2047152, 0, 0]],
                         'RSA': [[2, 0, 0], [4, 0, 0], [8, 0, 0], [16, 0, 0], [32, 0, 0], [64, 0, 0], [128, 0, 0]]}
         self.time = None
@@ -46,12 +46,10 @@ class Testrun:
             des[1], des[2] = desrun(IV, KEY, 'DES' + '_' + str(des[0]) + '.txt', 'DES_OUT' + '_' + str(des[0]) + '.des')
         for aes in self.type_size['AES']:
             aes[1], aes[2] = aesrun('AES' + '_' + str(aes[0]) + '.txt', 'AES_OUT' + '_' + str(aes[0]) + '.aes')
-        for HMACs in self.type_size['HMACs']:
-            HMACs[1] = HMACsrun('HMACs' + '_' + str(HMACs[0]) + '.txt')
-            HMACs[2] = HMACs[1] 
+        for HMAC in self.type_size['HMAC']:
+            HMAC[1] = HMACrun('HMAC' + '_' + str(HMAC[0]) + '.txt')
         for sha1 in self.type_size['SHA-1']:
             sha1[1] = sha1run('SHA-1' + '_' + str(sha1[0]) + '.txt')
-            sha1[2] = sha1[1] 
         for rsa in self.type_size['RSA']:
             rsa[1], rsa[2] = rsarun('RSA' + '_' + str(rsa[0]) + '.txt')
   
@@ -64,22 +62,26 @@ class Testrun:
 
     def visualization(self):
         for type in self.type_size.keys():
-            plot.bar(range(len(self.type_size[type])), [x[1] for x in self.type_size[type]],
+            plot.bar(range(len(self.type_size[type])), [x[1] * 1000000 for x in self.type_size[type]],
             tick_label=[y[0] for y in self.type_size[type]], color='rgb')
-            for a, b in enumerate([y[1] for y in self.type_size[type]]):
-                plot.text(a, b + b * 0.01, '%.7f' %b, ha='center', va='bottom', fontsize=8)
+            for a, b in enumerate([y[1] * 1000000 for y in self.type_size[type]]):
+                plot.text(a, b + b * 0.01, '%.4f' %b, ha='center', va='bottom', fontsize=8)
             plot.title(type + ' Encryption')
             plot.xlabel('File Size (Bytes)')
-            plot.ylabel('Time Consumed (Seconds)')
+            plot.ylabel('Time Consumed (Microseconds)')
+            plot.savefig('./' + type + '_Encryption' + '.png')
             plot.show()
 
-            plot.bar(range(len(self.type_size[type])), [x[2] for x in self.type_size[type]],
+            if type in ['SHA-1', 'HMAC']:
+                continue
+            plot.bar(range(len(self.type_size[type])), [x[2] * 1000000 for x in self.type_size[type]],
             tick_label=[y[0] for y in self.type_size[type]], color='rgb')
-            for a, b in enumerate([y[2] for y in self.type_size[type]]):
-                plot.text(a, b + b * 0.01, '%.7f' %b, ha='center', va='bottom', fontsize=8)
+            for a, b in enumerate([y[2]  * 1000000 for y in self.type_size[type]]):
+                plot.text(a, b + b * 0.01, '%.4f' %b, ha='center', va='bottom', fontsize=8)
             plot.title(type + ' Decryption')
             plot.xlabel('File Size (Bytes)')
-            plot.ylabel('Time Consumed (Seconds)')
+            plot.ylabel('Time Consumed (Microseconds)')
+            plot.savefig('./' + type + '_Decryption' + '.png')
             plot.show()
 
 
