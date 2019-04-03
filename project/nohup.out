@@ -1,9 +1,0 @@
-01:34:53  Created tap interface at0
-01:34:53  Trying to set MTU on at0 to 1500
-01:34:53  Trying to set MTU on wlan0mon to 1800
-01:34:53  Access Point with BSSID 00:C0:CA:81:E4:BD started.
-01:46:27  Client 34:08:BC:6F:7D:38 associated (unencrypted) to ESSID: "Starbucks"
-02:17:43  Client C0:A5:3E:13:70:BF associated (unencrypted) to ESSID: "Starbucks"
-02:29:16  Client E0:33:8E:EB:EF:CA associated (unencrypted) to ESSID: "Starbucks"
-02:31:10  Client F8:2D:7C:D3:9B:48 associated (unencrypted) to ESSID: "Starbucks"
-02:31:16  Client F8:2D:7C:D3:9B:48 associated (unencrypted) to ESSID: "Starbucks"

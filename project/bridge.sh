@@ -1,7 +1,7 @@
 #!/bin/sh
 
 name="wlan0"
-bridge="evil1"
+bridge="evil"
 
 brctl addbr "$bridge"
 brctl addif "$bridge" wlan1
