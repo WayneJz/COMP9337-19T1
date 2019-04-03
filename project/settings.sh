@@ -11,8 +11,6 @@ dnsmasq -C dnsmasq.conf -d
 killall dnsmasq dhcpd isc-dhcp-server
 /etc/init.d/dnsmasq start
 
-route add -net 10.0.0.0 netmask 255.255.255.0 gw 10.0.0.1
-
 iptables --flush
 iptables --table nat --append POSTROUTING --out-interface eth0 -j MASQUERADE
 iptables --append FORWARD --in-interface at0 -j ACCEPT
